@@ -1,0 +1,24 @@
+{
+  "name": "page-layout-bundle",
+  "directory": "Resources/public/vendor",
+  "homepage": "https://github.com/it-blaster/page-layout-bundle",
+  "authors": [
+    "Андрей Антонов <a.antonov@tradedealer.ru>"
+  ],
+  "description": "Bootstrap page layout for sonata, based on gridstack.js",
+  "main": "",
+  "moduleType": [],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "web/bower",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "lodash": "^4.3.0",
+    "jquery-ui": "^1.11.4"
+  }
+}
