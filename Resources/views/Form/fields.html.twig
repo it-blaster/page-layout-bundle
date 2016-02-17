@@ -1,0 +1,136 @@
+{% block page_layout_widget %}
+    {% stylesheets
+        '@EtfostraPageLayoutBundle/Resources/public/vendor/gridstack/dist/gridstack.min.css'
+        '@EtfostraPageLayoutBundle/Resources/public/css/sonata-page.back.css'
+        '@EtfostraPageLayoutBundle/Resources/public/css/custom.css'
+    %}
+        <link rel="stylesheet" href="{{ asset_url }}" />
+    {% endstylesheets %}
+
+    {% javascripts
+        '@EtfostraPageLayoutBundle/Resources/public/vendor/lodash/dist/lodash.min.js'
+        '@EtfostraPageLayoutBundle/Resources/public/vendor/gridstack/dist/gridstack.min.js'
+    %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+
+    <div id="{{ id }}" class="{{ attr.class }}">
+        <div class="page-composer__page-preview">
+            <div class="row">
+                <div class="col-lg-12">
+                    {#<h2>Layout</h2>#}
+                    <div class="row page-layout-header">
+                        <div class="col-sm-7">
+                            <select class="pageLayoutAvailableWidgets">
+                                <option value="text_page:123">Виджет 123</option>
+                                <option value="catalog:3">Виджет 321</option>
+                                <option value="widget:653">Виджет 2354343</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-5">
+                            <button class="btn btn-success pageLayoutAddWidget">Добавить виджет</button>
+                        </div>
+                    </div>
+                    <hr class="star-light">
+                </div>
+            </div>
+
+            <div class="grid-stack page-composer__page-preview__containers"></div>
+
+        </div>
+
+        <div class="pageLayoutItemTemplate">
+            <div class="grid-stack-item page-composer__page-preview__container" data-gs-max-height="1">
+                <div class="grid-stack-item-content page-composer__page-preview__container__content">
+                    <strong class="page-layout-widget-title"></strong>
+                    {#
+                    <dl class="dl-horizontal page-layout-widget-types">
+                        <dt>Тип верстки</dt>
+                        <dd>container</dd>
+                        <dt>Префикс</dt>
+                        <dd>sm</dd>
+                    </dl>
+                    #}
+
+                    <span class="page-composer__page-preview__add-block">
+                        <button class="btn btn-success"><i class="fa fa-edit"></i></button>
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="pageLayoutItemData">
+            <input type="hidden" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %}/>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        $(function () {
+            var $thisControl = $('#{{ id }}');
+            var data_input = $thisControl.find('.pageLayoutItemData input:first').val();
+            var state = data_input ? JSON.parse(data_input) : {};
+            var properties = {{ properties | json_encode | raw }};
+            var settings = {{ grid_settings | json_encode | raw }};
+
+            $thisControl.find('.grid-stack').gridstack(settings);
+
+            var grid = $thisControl.find('.grid-stack').data('gridstack');
+            var item_template = $thisControl.find('.pageLayoutItemTemplate').html();
+            grid.min_width('.grid-stack-item', settings.item_min_width);
+
+            var add_new_widget = function(widget_id, widget_name, x, y, w, h, properties) {
+                var $newWidget = $(item_template);
+
+                $newWidget.data('widget-id', widget_id);
+                $newWidget.find('.page-layout-widget-title').text(widget_name);
+
+                grid.add_widget($newWidget, x, y, w, h);
+                grid.min_width('.grid-stack-item', settings.item_min_width);
+            };
+
+            var serialize_widgets = function (items) {
+                state = $('.grid-stack .grid-stack-item:visible').map(function(){
+                    var $el = $(this);
+                    var node = $el.data('_gridstack_node');
+                    return {
+                        id: $el.data('widget-id'),
+                        x: node.x,
+                        y: node.y,
+                        width: node.width,
+                        height: node.height
+                    };
+                });
+                state = GridStackUI.Utils.sort(state);
+                $thisControl.find('.pageLayoutItemData input:first').val(JSON.stringify(state));
+            };
+
+            var unserialize_widgets = function() {
+                var items = GridStackUI.Utils.sort(state);
+                grid.remove_all();
+                $.each(items, function(){
+                    add_new_widget(
+                        this.id,
+                        $thisControl.find('.pageLayoutAvailableWidgets option[value="'+this.id+'"]').text(),
+                        this.x, this.y, this.width, this.height
+                    );
+                });
+            };
+            unserialize_widgets();
+
+            //Добавить виджет
+            $thisControl.find('.pageLayoutAddWidget').click(function() {
+                add_new_widget(
+                    $thisControl.find('.pageLayoutAvailableWidgets option:selected').val(),
+                    $thisControl.find('.pageLayoutAvailableWidgets option:selected').text(),
+                    0, 0, 12, 1
+                );
+                return false;
+            });
+
+            //Изменение
+            $thisControl.find('.grid-stack').on('change', function (e, items) {
+                serialize_widgets(items);
+            });
+        });
+    </script>
+{% endblock %}

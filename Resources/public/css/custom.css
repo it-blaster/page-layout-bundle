@@ -1,0 +1,20 @@
+.grid-stack>.grid-stack-item>.ui-resizable-handle {
+    background: white;
+}
+.grid-stack>.grid-stack-item>.ui-resizable-se {
+    right: 13px;
+    bottom: 3px;
+}
+.page-layout-widget-types {
+    margin: 0;
+}
+.page-layout-widget-title {
+    margin-right: 46px;
+    display: inline-block;
+}
+.page-layout-header {
+    margin: 20px 0 0 0;
+}
+.pageLayoutItemTemplate {
+    display: none;
+}

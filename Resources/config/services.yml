@@ -1,0 +1,8 @@
+services:
+    etfostra_page_layout.form.type.page_layout:
+        class: Etfostra\PageLayoutBundle\Form\Type\PageLayoutType
+        arguments:
+            - %etfostra_page_layout.grid_settings%
+            - %etfostra_page_layout.properties%
+        tags:
+            - { name: form.type, alias: page_layout }
