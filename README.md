@@ -17,11 +17,6 @@ based on [gridstack.js](https://github.com/troolee/gridstack.js)
 composer require it-blaster/page-layout-bundle
 ```
 
-### Run `bower install` in bundle's directory
-``` bash
-cd vendor/it-blaster/page-layout-bundle/Etfostra/PageLayoutBundle && bower install
-```
-
 ### Register the bundle in your `AppKernel.php`
 ``` php
 ...
