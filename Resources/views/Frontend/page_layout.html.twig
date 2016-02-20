@@ -1,0 +1,23 @@
+{% for row in rows %}
+    <section>
+        <div class="row">
+            {% for col in row %}
+                {% if col.properties.media_size_prefix is defined %}
+                    {% set media_size_prefix = col.properties.media_size_prefix %}
+                {% else %}
+                    {% set media_size_prefix = 'sm' %}
+                {% endif %}
+                {% set class = 'col-'~media_size_prefix~'-' ~ col.width ~ (col.offset > 0 ? ' col-'~media_size_prefix~'-offset-' ~ col.offset : '') %}
+                <div class="{{ class }}" style="background: #eee; border: solid 1px #aaa">
+                    <div>
+                        {% if renderer %}
+                            {{ renderer.widget(col.id) | raw }}
+                        {% else %}
+                            {{ col.id }}
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+{% endfor %}

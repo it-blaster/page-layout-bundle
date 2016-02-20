@@ -18,3 +18,13 @@
 .pageLayoutItemTemplate {
     display: none;
 }
+.page-composer__page-preview__container__content .page-composer__page-preview__add-block {
+    opacity:0;
+    -webkit-transition: all .1s ease-out;
+    -moz-transition: all .1s ease-out;
+    -o-transition: all .1s ease-out;
+    transition: all .1s ease-out;
+}
+.page-composer__page-preview__container__content:hover .page-composer__page-preview__add-block {
+    opacity: 1;
+}
