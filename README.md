@@ -1,4 +1,4 @@
-# page-layout-bundle
+# PageLayoutBundle
 Bootstrap page layout for Symfony [Sonata Admin Bundle](https://github.com/sonata-project/SonataAdminBundle),
 based on [gridstack.js](https://github.com/troolee/gridstack.js)
 
@@ -90,7 +90,8 @@ class YourAdmin extends Admin
             ->add('your_text_field', 'page_layout', array(
                 'required' => false,
                 'choices'  => array(
-                    //Key and value can be any string, it's up to you
+                    // Key and value can be any string, it's up to you.
+                    // This keys will be available later in WidgetRenderer::setWidgets
                     'CurrentPage:'          => 'Current page content',
                     'Widget:feedbackform'   => 'Feedback form',
                     'Widget:leftmenu'       => 'Left menu',
@@ -144,13 +145,16 @@ class WidgetRenderer implements WidgetRenderInterface
         $this->templating = $templating;
     }
     
-    public function setWidgets(array $widgets)
+    /**
+     * At this we must fill $this->widgets array with html rendered widgets
+     */
+    public function setWidgets(array $widgets) // $widgets example: array('CurrentPage:', 'Widget:feedbackform', 'Widget:leftmenu') 
     {
         foreach ($widgets as $widget_id) {
             $this->widgets[$widget_id] = $this->templating->render('YourAppBundle:Widget:widget.html.twig', array(
                 'widget_id' => $widget_id,
             ));
-        } 
+        }
     }
     
     public function getWidget($widget_id)
