@@ -84,6 +84,7 @@ $(function() {
     grid.min_width('.grid-stack-item', settings.item_min_width);
 
     var add_new_widget = function(widget_id, widget_name, x, y, w, h, widget_properties) {
+
         var $newWidget = $(item_template);
 
         $newWidget.data('widget-id', widget_id);
@@ -129,11 +130,14 @@ $(function() {
         grid.remove_all();
         $.each(items, function(){
             var props = typeof this.properties == 'undefined' ? {} : this.properties;
-            add_new_widget(
-                this.id,
-                $thisControl.find('.pageLayoutAvailableWidgets option[value="'+this.id+'"]').text(),
-                this.x, this.y, this.width, this.height, props
-            );
+            var $sourceItem = $thisControl.find('.pageLayoutAvailableWidgets option[value="'+this.id+'"]');
+            if ($sourceItem.length) {
+                add_new_widget(
+                    this.id,
+                    $sourceItem.text(),
+                    this.x, this.y, this.width, this.height, props
+                );
+            }
         });
     };
     unserialize_widgets();
