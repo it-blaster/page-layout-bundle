@@ -17,7 +17,7 @@ class ScriptHandler
         $output = array();
 
         chdir($bundleDirectory);
-        exec('bower install', $output, $status);
+        exec('bower install --allow-root -F', $output, $status);
         chdir($currentDirectory);
 
         foreach($output as $line) {
