@@ -17,6 +17,23 @@ based on [gridstack.js](https://github.com/troolee/gridstack.js)
 composer require it-blaster/page-layout-bundle
 ```
 
+### Add post install/update script to `composer.json`
+`installGridStackJs` just make system call `bower install` in bundle's directory
+``` json
+{
+    "scripts": {
+        "post-install-cmd": [
+             "Etfostra\\PageLayoutBundle\\Composer\\ScriptHandler::installGridStackJs",
+            ...
+        ],
+        "post-update-cmd": [
+             "Etfostra\\PageLayoutBundle\\Composer\\ScriptHandler::installGridStackJs",
+            ...
+        ]
+    }
+}
+```
+
 ### Register the bundle in your `AppKernel.php`
 ``` php
 ...

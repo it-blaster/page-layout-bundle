@@ -20,6 +20,10 @@ class ScriptHandler
         exec('bower install', $output, $status);
         chdir($currentDirectory);
 
+        foreach($output as $line) {
+            echo $line."\n";
+        }
+
         if ($status) {
             throw new \RuntimeException("Running 'bower install' failed with $status\n");
         }
