@@ -17,10 +17,10 @@
     "target-dir": "Etfostra/PageLayoutBundle",
     "scripts": {
         "post-install-cmd": [
-            "bower install"
+            "Etfostra\\PageLayoutBundle\\Composer\\ScriptHandler::installGridStackJs"
         ],
         "post-update-cmd": [
-            "bower install"
+            "Etfostra\\PageLayoutBundle\\Composer\\ScriptHandler::installGridStackJs"
         ]
     }
 }
