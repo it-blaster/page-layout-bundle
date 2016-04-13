@@ -142,16 +142,30 @@ $(function() {
     };
     unserialize_widgets();
 
+    var get_last_y = function() {
+        var items = GridStackUI.Utils.sort(state),
+            max = 0;
+        $.each(items, function(){
+            if(this.y > max) {
+                max = this.y;
+            }
+        });
+        return max+1;
+    }
+
     //Добавить виджет
     $thisControl.find('.pageLayoutAddWidget').click(function() {
         var widget_properties = {};
         $.each(properties, function(k,v){
             widget_properties[k] = Object.keys(v)[0];
         });
+
+        var y = get_last_y();
+
         add_new_widget(
             $thisControl.find('.pageLayoutAvailableWidgets option:selected').val(),
             $thisControl.find('.pageLayoutAvailableWidgets option:selected').text(),
-            0, 0, 12, 1, widget_properties
+            0, y, 12, 1, widget_properties
         );
         return false;
     });
