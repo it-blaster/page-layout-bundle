@@ -153,11 +153,27 @@ $(function() {
         return max+1;
     }
 
+    var is_container = function(array, value) {
+        for(i = 0; i < array.length; i++) {
+            if(array[i] == value) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     //Добавить виджет
     $thisControl.find('.pageLayoutAddWidget').click(function() {
         var widget_properties = {};
+        var widget_type = $thisControl.find('.pageLayoutAvailableWidgets option:selected').data('type-widget');
+        var widget_list = settings.widgets_container;
+        var widget_is_container = is_container(widget_list, widget_type);
+
         $.each(properties, function(k,v){
             widget_properties[k] = Object.keys(v)[0];
+            if(k == 'is_container' && widget_is_container) {
+                widget_properties[k] = 1;
+            }
         });
 
         var y = get_last_y();
