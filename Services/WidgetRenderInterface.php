@@ -19,4 +19,10 @@ interface WidgetRenderInterface
      * @return mixed
      */
     public function getWidget($widget_id);
+
+    /**
+     * @param $widget_id
+     * @param $content
+     */
+    public function setWidget($widget_id, $content);
 }
