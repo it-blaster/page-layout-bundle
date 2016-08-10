@@ -2,13 +2,13 @@ services:
     etfostra_page_layout.form.type.page_layout:
         class: Etfostra\PageLayoutBundle\Form\Type\PageLayoutType
         arguments:
-            - %etfostra_page_layout.grid_settings%
-            - %etfostra_page_layout.properties%
+            - '%etfostra_page_layout.grid_settings%'
+            - '%etfostra_page_layout.properties%'
         tags:
             - { name: form.type, alias: page_layout }
 
     etfostra_page_layout.services.page_layout:
         class: Etfostra\PageLayoutBundle\Services\PageLayout
         arguments:
-            - %etfostra_page_layout.templates%
-            - @templating
+            - '%etfostra_page_layout.templates%'
+            - '@templating'
