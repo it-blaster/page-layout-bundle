@@ -95,6 +95,7 @@ class PageLayout
             $widgetsInContainer = $this->getWidgetsInContainer();
             foreach ($this->layout_data as $ind => $item) {
                 $item['in_container'] = false;
+                $item['object'] = null;
                 if (strstr($item['id'], 'Widget:')) {
                     $widgetId = str_replace('Widget:', '',$item['id']);
                     $rep = $this->getEM()->getRepository('TradeinsCorpBundle:Widget\Widget');
