@@ -109,7 +109,6 @@ class PageLayout
             }
         }
         $this->layout_data = $layoutData;
-        dump($this->layout_data);
     }
 
     /**
