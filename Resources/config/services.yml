@@ -12,3 +12,5 @@ services:
         arguments:
             - '%etfostra_page_layout.templates%'
             - '@templating'
+            - '@doctrine.orm.entity_manager'
+            - '%etfostra_page_layout.grid_settings%'

@@ -2,7 +2,9 @@
 
 namespace Etfostra\PageLayoutBundle\Services;
 
+use Doctrine\ORM\EntityManager;
 use Symfony\Component\Templating\EngineInterface;
+use Tradeins\CorpBundle\Entity\Widget\Widget;
 
 class PageLayout
 {
@@ -18,17 +20,26 @@ class PageLayout
     /** @var WidgetRenderInterface|null */
     protected $widget_renderer;
 
+    /** @var EntityManager */
+    protected $doctrine_orm_entity_manager;
+
+    protected $grid_settings = [];
+
     /**
      * PageLayout constructor.
      * @param array $templates
      * @param EngineInterface $templating
+     * @param EntityManager $doctrine_orm_entity_manager
+     * @param array $gridSettings
      * @param WidgetRenderInterface|null $widget_renderer
      */
-    public function __construct(array $templates, EngineInterface $templating, WidgetRenderInterface $widget_renderer = null)
+    public function __construct(array $templates, EngineInterface $templating, EntityManager $doctrine_orm_entity_manager, array $gridSettings, WidgetRenderInterface $widget_renderer = null)
     {
-        $this->templates = $templates;
-        $this->templating = $templating;
-        $this->widget_renderer = $widget_renderer;
+        $this->templates                    = $templates;
+        $this->templating                   = $templating;
+        $this->widget_renderer              = $widget_renderer;
+        $this->doctrine_orm_entity_manager  = $doctrine_orm_entity_manager;
+        $this->grid_settings                = $gridSettings;
     }
 
     /**
@@ -71,9 +82,33 @@ class PageLayout
             $this->layout_data = array();
         } else {
             $this->layout_data = json_decode($layout_data, true);
+            $this->addObjectsToLayoutData();
         }
 
         return $this;
+    }
+
+    private function addObjectsToLayoutData()
+    {
+        if (count($this->layout_data)) {
+            $layoutData = [];
+            $widgetsInContainer = $this->getWidgetsInContainer();
+            foreach ($this->layout_data as $ind => $item) {
+                $item['in_container'] = false;
+                if (strstr($item['id'], 'Widget:')) {
+                    $widgetId = str_replace('Widget:', '',$item['id']);
+                    $rep = $this->getEM()->getRepository('TradeinsCorpBundle:Widget\Widget');
+                    /** @var Widget $widget */
+                    if ($widget = $rep->find($widgetId)) {
+                        $item['object'] = $widget;
+                        $item['in_container'] = in_array($widget->getTypeWidget(), $widgetsInContainer);
+                    }
+                }
+                $layoutData[$ind] = $item;
+            }
+        }
+        $this->layout_data = $layoutData;
+        dump($this->layout_data);
     }
 
     /**
@@ -93,6 +128,30 @@ class PageLayout
         $this->widget_renderer = $widget_renderer;
 
         return $this;
+    }
+
+    /**
+     * Doctrine Orm Entity Manager
+     *
+     * @return EntityManager
+     */
+    private function getEM()
+    {
+        return $this->doctrine_orm_entity_manager;
+    }
+
+    /**
+     * Список алиасов виджетов в контейнере
+     *
+     * @return array
+     */
+    private function getWidgetsInContainer()
+    {
+        $widgetsInContainer = [];
+        if (count($this->grid_settings) && isset($this->grid_settings['widgets_container'])) {
+            $widgetsInContainer = $this->grid_settings['widgets_container'];
+        }
+        return $widgetsInContainer;
     }
 
     /**
@@ -136,6 +195,7 @@ class PageLayout
             $col_cursor_point = 0;
             foreach($row as $col_key => $col) {
                 $rows[$row_key][$col_key]['offset'] = $rows[$row_key][$col_key]['x'] - $col_cursor_point;
+
                 $col_cursor_point += $rows[$row_key][$col_key]['offset'] + $rows[$row_key][$col_key]['width'];
             }
         }
