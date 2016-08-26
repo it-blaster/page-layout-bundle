@@ -92,7 +92,7 @@ class PageLayout
     {
         if (count($this->layout_data)) {
             $layoutData = [];
-            $widgetsInContainer = $this->getWidgetsInContainer();
+            $widgetsNotContainer = $this->getWidgetsNotContainer();
             foreach ($this->layout_data as $ind => $item) {
                 $item['in_container'] = false;
                 $item['object'] = null;
@@ -102,12 +102,13 @@ class PageLayout
                     /** @var Widget $widget */
                     if ($widget = $rep->find($widgetId)) {
                         $item['object'] = $widget;
-                        $item['in_container'] = in_array($widget->getTypeWidget(), $widgetsInContainer);
+                        $item['in_container'] = !in_array($widget->getTypeWidget(), $widgetsNotContainer);
                     }
                 }
                 $layoutData[$ind] = $item;
             }
         }
+        dump($layoutData);
         $this->layout_data = $layoutData;
     }
 
@@ -141,15 +142,15 @@ class PageLayout
     }
 
     /**
-     * Список алиасов виджетов в контейнере
+     * Список алиасов виджетов которые не должны быть в контейнере
      *
      * @return array
      */
-    private function getWidgetsInContainer()
+    private function getWidgetsNotContainer()
     {
         $widgetsInContainer = [];
-        if (count($this->grid_settings) && isset($this->grid_settings['widgets_container'])) {
-            $widgetsInContainer = $this->grid_settings['widgets_container'];
+        if (count($this->grid_settings) && isset($this->grid_settings['widgets_not_container'])) {
+            $widgetsInContainer = $this->grid_settings['widgets_not_container'];
         }
         return $widgetsInContainer;
     }
