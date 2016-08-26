@@ -108,7 +108,6 @@ class PageLayout
                 $layoutData[$ind] = $item;
             }
         }
-        dump($layoutData);
         $this->layout_data = $layoutData;
     }
 
