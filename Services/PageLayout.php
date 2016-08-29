@@ -90,8 +90,8 @@ class PageLayout
 
     private function addObjectsToLayoutData()
     {
+        $layoutData = [];
         if (count($this->layout_data)) {
-            $layoutData = [];
             $widgetsNotContainer = $this->getWidgetsNotContainer();
             foreach ($this->layout_data as $ind => $item) {
                 $item['in_container'] = false;
