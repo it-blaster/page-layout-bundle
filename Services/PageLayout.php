@@ -164,7 +164,7 @@ class PageLayout
 
         $widget_keys_array = array();
         foreach ($layout_data as $box) {
-            $widget_keys_array[] = $box['id'];
+            $widget_keys_array[$box['id']] = $box['width'];
         }
 
         $this->getWidgetRenderer()->setWidgets($widget_keys_array);
