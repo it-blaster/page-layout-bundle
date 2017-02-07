@@ -53,7 +53,7 @@ class Configuration implements ConfigurationInterface
                         ->booleanNode('static_grid')->defaultValue(false)->end()
                         ->integerNode('vertical_margin')->defaultValue(10)->end()
                         ->integerNode('width')->defaultValue(12)->end()
-                        ->integerNode('item_min_width')->cannotBeEmpty()->defaultValue(4)->end()
+                        ->integerNode('item_min_width')->isRequired()->defaultValue(4)->end()
                         ->arrayNode('widgets_not_container')
                             ->prototype('scalar')->end()
                         ->end()
