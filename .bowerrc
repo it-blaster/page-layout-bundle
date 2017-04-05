@@ -1,3 +1,4 @@
 {
-  "directory" : "Resources/public/vendor"
+  "directory" : "Resources/public/vendor",
+  "json": false
 }
