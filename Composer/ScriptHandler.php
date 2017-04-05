@@ -19,7 +19,7 @@ class ScriptHandler
         $process->run();
 
         if (!$process->isSuccessful()) {
-            throw new \RuntimeException("Running 'bower install' failed from directory ".$bundleDirectory.". Descritption error: ".$process->getErrorOutput());
+            throw new \RuntimeException("Running 'bower install' failed from directory ".$bundleDirectory.". Description error: ".$process->getErrorOutput());
         }
     }
 }
