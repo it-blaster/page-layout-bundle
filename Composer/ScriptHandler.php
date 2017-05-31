@@ -16,6 +16,7 @@ class ScriptHandler
 
         $command = 'bower install --allow-root -F';
         $process = new Process($command, $bundleDirectory);
+        $process->setTimeout(600);
         $process->run();
 
         if (!$process->isSuccessful()) {
